@@ -18,7 +18,6 @@ public class SmsUtils {
                 conn.setRequestMethod("GET");
                 conn.connect();
                 BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuffer results = new StringBuffer();
                 String solde = br.readLine();
                 br.close();
                 return Integer.parseInt(solde);
@@ -77,9 +76,9 @@ public class SmsUtils {
                 System.out.println("Usage: java SendSMS [apikey] [number] [message] [exp] [msg_id]");
                 System.out.println("");
                 System.out.println("[apikey] = ApiKey ENVOYERSMS");
-                System.out.println("[number] = Le numéro du destinataire au format international");
+                System.out.println("[number] = Le numï¿½ro du destinataire au format international");
                 System.out.println("[message] = Contenu de votre message (160 carracteres par SMS)");
-                System.out.println("[exp] = Le numéro de l'expéditeur (optionnel)");
+                System.out.println("[exp] = Le numï¿½ro de l'expï¿½diteur (optionnel)");
                 System.out.println("[msg_id] = Identifiant du message (optionnel)");
           }
           else if (args.length == 0)

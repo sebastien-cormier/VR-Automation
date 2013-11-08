@@ -4,6 +4,7 @@ package fr.cormier.vra.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -109,7 +110,7 @@ public class TestUtilDaoJdbc extends JdbcDaoSupport {
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(sql);
+				PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, 0);
 				ps.setString(2, String.valueOf(commandType));
 				ps.setInt(3, vrUserId);
@@ -130,7 +131,7 @@ public class TestUtilDaoJdbc extends JdbcDaoSupport {
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(sql);
+				PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, 0);
 				ps.setString(2, name);
 				if( startDate!=null ) {
@@ -155,13 +156,13 @@ public class TestUtilDaoJdbc extends JdbcDaoSupport {
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(sql);
+				PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, 0);
 				ps.setInt(2, vrUserId);
 				ps.setInt(3, raceId);
 				ps.setInt(4, heading);
 				ps.setInt(5, sail.getValue());
-				ps.setDate(6, new java.sql.Date(startDate.getTime()));
+				ps.setTimestamp(6, new java.sql.Timestamp(startDate.getTime()));
 				ps.setString(7, String.valueOf(status));
 				ps.setString(8, String.valueOf(testStatus));
 				return ps;
@@ -178,7 +179,7 @@ public class TestUtilDaoJdbc extends JdbcDaoSupport {
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(sql);
+				PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, vrUserId);
 				ps.setInt(2, raceId);
 				ps.setString(3, mode);
@@ -190,7 +191,7 @@ public class TestUtilDaoJdbc extends JdbcDaoSupport {
 	}
 	
 	public int randId() {
-		return (int)Math.random()*MAX_ID;
+		return (int)(Math.random()*MAX_ID);
 	}
 
 	public int createBoatPositionHistory(final int testVrUserId, final int testRaceId,
@@ -203,7 +204,7 @@ public class TestUtilDaoJdbc extends JdbcDaoSupport {
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(sql);
+				PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, 0);
 				ps.setInt(2, testVrUserId);
 				ps.setInt(3, testRaceId);

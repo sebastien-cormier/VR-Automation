@@ -1,6 +1,6 @@
 package fr.cormier.vra.service.impl;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 
@@ -13,9 +13,13 @@ public class RoutingCommandServiceImplUTest extends AbstractServiceUTest {
 	
 	private static RoutingServiceImpl serviceRouting;
 	
+	private static String ZEZO_ROUTING_LINE = "<img src=\"img/dot.png\" class=\"abs\" style=\"z-index: 1; left :-140px; top:1305px;\" \n"+
+	"onmouseover=\"updi(event,'2013-11-08 14:30 UTC (T+ 0:00)<br>Distances:&nbsp;0.0nm/2434.1nm<br><b>Wind:</b> 223&deg; 14.0 kt (<b>TWA 64&deg;</b>)<br><b>Heading:</b> 287&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 11.32 kts','220px')\" onmouseout=\"cleari()\" \n"+ 
+	"onmousedown=\"show_wind(0);\">\";";
+	
 	static {
 		serviceRouting = (RoutingServiceImpl)getBean(IRoutingService.class);
-		serviceRouting.setMockHtml("/test_zezo_03.htm");
+		serviceRouting.setMockHtml("/test_zezo.htm");
 	}
 	
 	@Test
@@ -27,12 +31,13 @@ public class RoutingCommandServiceImplUTest extends AbstractServiceUTest {
 		position.setLongitude(174.645345061);
 		
 		//action
+		//serviceRouting.setMockHtml("test_zezo_01.htm");
 		RoutingCommand result = serviceRouting.retrieveCurrentRoutingCommand(position);
 		
 		//assert
 		RoutingCommand expected = new RoutingCommand();
 		expected.setSail(SailEnum.JIB);
-		expected.setHeading(122);
+		expected.setHeading(287);
 		Assert.assertEquals(expected, result);
 	}
 
@@ -40,20 +45,20 @@ public class RoutingCommandServiceImplUTest extends AbstractServiceUTest {
 	public void parseHeading() {
 		
 		//setup
-		String line = " <img src=\"./Sailing Simulator  Austral Pursuit_files/dot.png\" class=\"abs\" style=\"z-index: 1; left :22353px; top:16873px;\" onmouseover=\"updi(event,&#39;2013-02-24 08:10 UTC (T+ 0:00)&lt;br&gt;Distances:�0.0nm/4127.8nm&lt;br&gt;&lt;b&gt;Wind:&lt;/b&gt; 174� 12.4 kt (&lt;b&gt;TWA 52�&lt;/b&gt;)&lt;br&gt;&lt;b&gt;Heading:&lt;/b&gt; 122� &lt;b&gt;Sail:&lt;/b&gt; Jib&lt;br&gt;&lt;b&gt;Boat Speed:&lt;/b&gt; 16.33 kts&#39;,&#39;220px&#39;)\" onmouseout=\"cleari()\" onmousedown=\"show_wind(0);\">";
-		
+		String line = ZEZO_ROUTING_LINE;
+
 		//action
 		int heading = serviceRouting.parseHeading(line);
 		
 		// assert
-		Assert.assertEquals(122, heading);
+		Assert.assertEquals(287, heading);
 	}
 
 	@Test
 	public void parseSail() {
 		
 		//setup
-		String line = " <img src=\"./Sailing Simulator  Austral Pursuit_files/dot.png\" class=\"abs\" style=\"z-index: 1; left :22353px; top:16873px;\" onmouseover=\"updi(event,&#39;2013-02-24 08:10 UTC (T+ 0:00)&lt;br&gt;Distances:�0.0nm/4127.8nm&lt;br&gt;&lt;b&gt;Wind:&lt;/b&gt; 174� 12.4 kt (&lt;b&gt;TWA 52�&lt;/b&gt;)&lt;br&gt;&lt;b&gt;Heading:&lt;/b&gt; 122� &lt;b&gt;Sail:&lt;/b&gt; Jib&lt;br&gt;&lt;b&gt;Boat Speed:&lt;/b&gt; 16.33 kts&#39;,&#39;220px&#39;)\" onmouseout=\"cleari()\" onmousedown=\"show_wind(0);\">";
+		String line = ZEZO_ROUTING_LINE;
 		
 		//action
 		SailEnum sail = serviceRouting.parseSail(line);

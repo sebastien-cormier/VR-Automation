@@ -7,6 +7,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ CommandDaoJdbcImplUTest.class, RaceDaoJdbcImplUTest.class, ScheduleDaoJdbcImplUTest.class,
 		UserRaceDaoJdbcImplUTest.class })
-public class DaoJdbcImplAllUTests {
+public class AllTest {
 
 }

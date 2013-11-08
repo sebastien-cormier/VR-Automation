@@ -2,7 +2,7 @@ package fr.cormier.vra.dao.impl;
 
 import java.util.List;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 

@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.cormier.vra</groupId>
-  <artifactId>vra-domain</artifactId>
+  <artifactId>vra-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -32,19 +32,23 @@
 
   <dependencies>
   
-          <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.17</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        
   	<dependency>
   		<groupId>org.simpleframework</groupId>
   		<artifactId>simple-xml</artifactId>
   		<version>2.6.9</version>
   	</dependency>
+  	
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore</artifactId>
+        <version>4.2.2</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.2.2</version>
+      </dependency>
   	
   	<!-- Core utilities used by other modules.
     Define this if you use Spring Utility APIs 
@@ -168,18 +172,22 @@
     <version>${org.springframework.version}</version>
     <scope>test</scope>
 </dependency>
+
+  	<dependency>
+  		<groupId>fr.cormier.vra</groupId>
+  		<artifactId>vra-domain</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
   	<dependency>
   		<groupId>fr.cormier.vra</groupId>
   		<artifactId>vra-utils</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
-  	
   	<dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.8.1</version>
       <scope>test</scope>
     </dependency>
-    
   </dependencies>
 </project>

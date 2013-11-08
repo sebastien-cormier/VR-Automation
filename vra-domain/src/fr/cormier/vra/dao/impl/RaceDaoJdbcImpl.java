@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -39,7 +40,7 @@ public class RaceDaoJdbcImpl extends JdbcDaoSupport implements IRaceDao {
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(sql);
+				PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, 0);
 				ps.setString(2, race.getName());
 				if( race.getStartDate()!=null ) {

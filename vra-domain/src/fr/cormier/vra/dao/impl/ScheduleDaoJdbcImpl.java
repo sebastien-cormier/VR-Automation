@@ -3,6 +3,7 @@ package fr.cormier.vra.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class ScheduleDaoJdbcImpl extends JdbcDaoSupport implements IScheduleDao 
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(sql);
+				PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, 0);
 				ps.setInt(2, schedule.getVrUserId());
 				ps.setInt(3, schedule.getRaceId());

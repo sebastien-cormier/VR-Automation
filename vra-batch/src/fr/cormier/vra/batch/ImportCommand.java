@@ -2,7 +2,6 @@ package fr.cormier.vra.batch;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,15 +13,12 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.StandardEnvironment;
 
 import fr.cormier.domain.db.Command;
 import fr.cormier.vra.service.ICommandService;
 import fr.cormier.vra.service.IRoutingService;
 import fr.cormier.vra.service.IScheduleService;
 import fr.cormier.vra.service.IUserRaceService;
-import fr.cormier.vra.service.impl.CommandServiceImpl;
 
 
 public class ImportCommand {
@@ -56,6 +52,7 @@ public class ImportCommand {
 		
 		if( args==null ) {
 			System.out.println("Need import file as first argument");
+			context.close();
 			return;
 		}
 		String fichier = args[0];
@@ -68,7 +65,7 @@ public class ImportCommand {
 			e.printStackTrace();
 		}
 	
-
+		context.close();
 	}
 	
 	public void launchImportCommand(String fichier) throws IOException {

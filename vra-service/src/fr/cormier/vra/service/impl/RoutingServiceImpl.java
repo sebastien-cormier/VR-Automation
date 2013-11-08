@@ -17,6 +17,7 @@ import fr.cormier.domain.db.UserRace;
 import fr.cormier.domain.external.Position;
 import fr.cormier.domain.external.RoutingCommand;
 import fr.cormier.domain.xml.getuser.BoatsPositionWrapper;
+import fr.cormier.utils.NumericUtils;
 import fr.cormier.vra.service.IRoutingService;
 
 @Service("serviceRouting")
@@ -24,15 +25,11 @@ public class RoutingServiceImpl implements IRoutingService {
 
 	private final static Log logger = LogFactory.getLog(RoutingServiceImpl.class);
 
-	private static final String LINE_FIND_TEMPLATE_START = "	onmouseover=\"updi(event";
-
 	private String mockHtml;
 	
-	private static final String HEADING_FIND_TEMPLATE_START = "<b>Heading:</b> ";
-	private static final String HEADING_FIND_TEMPLATE_END = "&deg;";
+	private static final String HEADING_FIND_TEMPLATE_START = "<br><b>Heading:</b> ";
 	
 	private static final String SAIL_FIND_TEMPLATE_START = "<b>Sail:</b> ";
-	private static final String SAIL_FIND_TEMPLATE_END = "<br><b>Boat";
 	
 	//private static final String ZEZO_URL_TEMPLATE = "http://sail.zezo.org/austral/chart.pl?lat=@LATITUDE&lon=@LONGITUDE&o=0&wind=0&tlon=-66.9818&tlat=-56.0912&clon=-153.0625&clat=-48.875";
 	private static final String ZEZO_URL_TEMPLATE = "http://sail.zezo.org/fr/chart.pl?lat=@LATITUDE&lon=@LONGITUDE&o=0&wind=0clon=6.71875&clat=43.28125";
@@ -105,22 +102,24 @@ public class RoutingServiceImpl implements IRoutingService {
 
 	protected SailEnum parseSail(String line) {
 		int start = line.indexOf(SAIL_FIND_TEMPLATE_START) + SAIL_FIND_TEMPLATE_START.length();
-		int end = line.indexOf(SAIL_FIND_TEMPLATE_END, start);
-		String strSail = line.substring(start,end);
+		String strSail = line.substring(start,start+3);
 		return SailEnum.fromString(strSail);
 	}
 
 	protected int parseHeading(String line) {
 		int start = line.indexOf(HEADING_FIND_TEMPLATE_START) + HEADING_FIND_TEMPLATE_START.length();
-		int end = line.indexOf(HEADING_FIND_TEMPLATE_END, start);
-		String strHeading = line.substring(start,end);
-		return Integer.parseInt(strHeading);
+		for(int i=3; i>0; i--) {
+			if( NumericUtils.isInteger(line.substring(start,start+i)) ) {
+				return Integer.parseInt(line.substring(start,start+i));
+			}
+		}
+		return -1;
 	}
 
 	private String retrieveFirstLine(String htmlDoc) {
 		String[] lines = htmlDoc.split("\n");
 		for(int i=0; i<lines.length; i++) {
-			if( lines[i].startsWith(LINE_FIND_TEMPLATE_START) ) {
+			if( lines[i].contains(HEADING_FIND_TEMPLATE_START) ) {
 				return lines[i];
 			}
 		}
@@ -134,8 +133,11 @@ public class RoutingServiceImpl implements IRoutingService {
 	}
 
 	private static String convertStreamToString(java.io.InputStream is) {
-	    java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-	    return s.hasNext() ? s.next() : "";
+	    java.util.Scanner s = new java.util.Scanner(is);
+	    s.useDelimiter("\\A");
+	    String r = s.hasNext() ? s.next() : "";
+	    s.close();
+	    return r;
 	}
 
 	@Override

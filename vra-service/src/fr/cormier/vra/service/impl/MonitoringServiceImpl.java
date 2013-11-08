@@ -22,6 +22,8 @@ public class MonitoringServiceImpl implements IMonitoringService {
 	@Override
 	public void launchMonitoringJob(List<UserRace> userRaces) {
 		
+		logger.debug("launch Monitoring Job");
+		
 		for (UserRace userRace : userRaces) {
 			
 			// Retrieve last position, new position and save new position

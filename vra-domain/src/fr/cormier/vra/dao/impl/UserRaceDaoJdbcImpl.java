@@ -3,6 +3,7 @@ package fr.cormier.vra.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -35,7 +36,7 @@ public class UserRaceDaoJdbcImpl extends JdbcDaoSupport implements IUserRaceDao 
 		return getJdbcTemplate().update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(sql);
+				PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, userRace.getVrUserId());
 				ps.setInt(2, userRace.getRaceId());
 				ps.setString(3, userRace.getMode());

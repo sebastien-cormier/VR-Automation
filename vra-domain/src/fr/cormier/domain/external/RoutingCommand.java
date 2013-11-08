@@ -1,7 +1,6 @@
 package fr.cormier.domain.external;
 
 import fr.cormier.domain.SailEnum;
-import fr.cormier.domain.db.Command;
 import fr.cormier.utils.EqualsUtils;
 
 public class RoutingCommand {
