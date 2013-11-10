@@ -1,0 +1,339 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta name="viewport" content="width=device-width, user-scalable=no initial-scale=1.0, minimum-scale=1.0" />
+
+<title>Sailing Simulator: JV Mono</title>
+
+<link href="div.css?41" rel="stylesheet" type="text/css">
+<!--[if lt IE 7]>
+<link href="div6.css?23" rel="stylesheet" type="text/css">
+<![endif]-->
+<!--[if lt IE 9]>
+<style type="text/css">
+.ie {
+	display: none;
+}
+</style>
+<![endif]-->
+
+<script type="text/javascript">
+var scale = 32;
+var session_id = "55b364d7a7d52eb8eb5bcca403a2f02b";
+var days = 8;
+var boat_lat = 49.160990451;
+var boat_lon = -4.32629024221;
+var goal_lat = 26.9135;
+var goal_lon = -48.647;
+var scroll_x = 138; 
+var scroll_y = -1307; 
+var boat_heading = 255.340909736694;
+var iso_id = '42/fa0958b9fef588f95c6d426f9a82b19232'; 
+var iso_minx = -5; 
+var iso_miny = 2; 
+var iso_maxx = 0; 
+var iso_maxy = 7;
+var wind_time = 0;
+var grib_steps = 27;
+var datastamp = '06+192';
+var mobile = 0;
+</script>
+
+<SCRIPT type="text/javascript" src="util.js?20" defer></SCRIPT>
+<SCRIPT type="text/javascript" src="iwind.js?20" defer></SCRIPT>
+<SCRIPT type="text/javascript" src="cwind.js?21" defer></SCRIPT>
+<SCRIPT type="text/javascript" src="scroll.js?20" defer></SCRIPT>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-27385643-1']);
+  _gaq.push(['_setDomainName', 'zezo.org']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+<body onload="init()">
+<div style="position: relative; top:0px; width:100%;">
+ 
+ 
+<div id="fs_menubar">
+&nbsp;<a href="index.html" style="color:black;"><u>H</u>ome</a>&nbsp;&nbsp;
+<a href="forum.pl" style="color:black;"><u>F</u>orum</a>&nbsp;&nbsp;
+<a href="charts.html" style="color:black;">Char<u>t</u>s</a>&nbsp;&nbsp;
+<a href="fb.html" style="color:black;"><u>C</u>ontact</a>&nbsp;&nbsp;
+<a href="qa.html" style="color:black;"><u>Q</u>&amp;A</a>&nbsp;&nbsp;
+<a href="about.html" style="color:black;"><u>A</u>bout</a>&nbsp;|
+&nbsp;
+<!-- Announcement area --> 
+<!--font size="-1"> <Would you like to support the project by 
+<a style="text-decoration:underline;" href="about.html#donate">donating</a> 
+a small amount for hardware upgrade? Read the 
+<a style="text-decoration:underline;" href="about.html#tech">full story</a>. -->
+<b>Jacques Vabre Mono</b>
+<div style="float:right"><a href="about.html#donate"><img src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif"><a></div>
+</div>
+
+
+<div id="new_nav">
+<button class="nnav" onmousedown="zoom_out();" title="Zoom Out"><b>&minus;</b></button><select class="nnav" title="Zoom level" onchange="select_zoom(this);">
+
+	<option value="8" >1%</option>
+
+	<option value="16" >2%</option>
+
+	<option value="32" selected>5%</option>
+
+	<option value="64" >10%</option>
+
+	<option value="128" >25%</option>
+
+	<option value="256" >50%</option>
+
+	<option value="512" >100%</option>
+
+</select><button class="nnav" onmousedown="zoom_in();" title="Zoom In" style="margin-right:20px;"><b>+</b></button>
+<button class="nnav pad2 ie" onmousedown="toggle_tracks();" title="Toggle tracks"><img id="track_icon" style="vertical-align: text-top;" width="16px" height="16px" src="img/icon_track_gray.png"></button>
+<button class="nnav pad2" onmousedown="wind_display(0);" title="None"><img style="vertical-align: text-top;" width="16px" height="16px" src="img/icon_n.png"></button><button class="nnav pad2" onmousedown="wind_display(1);" title="Black barbs"><img style="vertical-align: text-top;" width="16px" height="16px" src="img/icon_bb.png"></button><button class="nnav pad2 ie" onmousedown="wind_display(2);" title="Color barbs"><img style="vertical-align: text-top;" width="16px" height="16px" src="img/icon_cb.png"></button><button class="nnav pad2 ie" onmousedown="wind_display(3);" title="Arrows"><img style="vertical-align: text-top;" width="16px" height="16px" src="img/icon_a.png"></button>
+<button title="Previous  wind" class="nnav" onmousedown="prev_wind();">&lt;</button><select id="hours" class="nnav" title="Wind time" onchange="show_wind(this.selectedIndex * 12);">
+
+	<option selected>Now</option>
+
+	<option >+12 h</option>
+
+	<option >+24 h</option>
+
+	<option >+36 h</option>
+
+	<option >+48 h</option>
+
+	<option >+60 h</option>
+
+	<option >+72 h</option>
+
+	<option >+84 h</option>
+
+	<option >+96 h</option>
+
+	<option >+108 h</option>
+
+	<option >+120 h</option>
+
+	<option >+132 h</option>
+
+	<option >+144 h</option>
+
+	<option >+156 h</option>
+
+	<option >+168 h</option>
+
+	<option >+180 h</option>
+
+</select><button class="nnav" title="Next wind" style="margin-right: 30px;" onmousedown="next_wind();">&gt;</button>
+<select onchange="set_days(this.selectedIndex + 1);" class="nnav" title="Track duration">
+
+	<option >1d</option>
+
+	<option >2d</option>
+
+	<option >3d</option>
+
+	<option >4d</option>
+
+	<option >5d</option>
+
+	<option >6d</option>
+
+	<option >7d</option>
+
+	<option  selected>8d</option>
+
+</select>
+
+<!--button class="nnav"><b>?</b></button-->
+
+</div><!-- new nav--> 
+
+</div>
+<div id="vp_container">
+<div id="vp_canvas" onmousedown="grab(event)">
+<div id="wind_info" >Wind:&nbsp;<span id="wind_data"></span></div>
+<div id="tile_layer"></div>
+<div id="iso_layer" style="z-index:0" ></div>
+<div id="winds_layer"></div>
+<div id="dot_layer" style="z-index:0">
+
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-140px; top:1305px;" 
+	onmouseover="updi(event,'2013-11-08 14:30 UTC (T+ 0:00)<br>Distances:&nbsp;0.0nm/2434.1nm<br><b>Wind:</b> 223&deg; 14.0 kt (<b>TWA 64&deg;</b>)<br><b>Heading:</b> 287&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 11.32 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(0);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-145px; top:1304px;" 
+	onmouseover="updi(event,'2013-11-08 15:00 UTC (T+ 0:30)<br>Distances:&nbsp;5.6nm/2429.4nm<br><b>Wind:</b> 226&deg; 14.3 kt (<b>TWA 50&deg;</b>)<br><b>Heading:</b> 276&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 10.35 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(0);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-146px; top:1304px;" 
+	onmouseover="updi(event,'2013-11-08 15:10 UTC (T+ 0:40)<br>Distances:&nbsp;7.3nm/2427.8nm<br><b>Wind:</b> 227&deg; 14.4 kt (<b>TWA 56&deg;</b>)<br><b>Heading:</b> 283&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 10.77 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(0);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-159px; top:1302px;" 
+	onmouseover="updi(event,'2013-11-08 16:40 UTC (T+ 2:10)<br>Distances:&nbsp;23.3nm/2414.0nm<br><b>Wind:</b> 233&deg; 15.4 kt (<b>TWA 52&deg;</b>)<br><b>Heading:</b> 285&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 10.66 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(0);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-178px; top:1299px;" 
+	onmouseover="updi(event,'2013-11-08 19:00 UTC (T+ 4:30)<br>Distances:&nbsp;47.9nm/2393.2nm<br><b>Wind:</b> 287&deg; 24.0 kt (<b>TWA 55&deg;</b>)<br><b>Heading:</b> 232&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 12.10 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(12);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-191px; top:1305px;" 
+	onmouseover="updi(event,'2013-11-08 20:40 UTC (T+ 6:10)<br>Distances:&nbsp;62.4nm/2374.3nm<br><b>Wind:</b> 286&deg; 24.3 kt (<b>TWA 56&deg;</b>)<br><b>Heading:</b> 230&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 12.23 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(12);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-224px; top:1324px;" 
+	onmouseover="updi(event,'2013-11-09 01:00 UTC (T+10:30)<br>Distances:&nbsp;108.8nm/2325.4nm<br><b>Wind:</b> 285&deg; 24.2 kt (<b>TWA 53&deg;</b>)<br><b>Heading:</b> 232&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 11.88 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(12);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-268px; top:1347px;" 
+	onmouseover="updi(event,'2013-11-09 07:00 UTC (T+16:30)<br>Distances:&nbsp;177.5nm/2258.7nm<br><b>Wind:</b> 276&deg; 16.9 kt (<b>TWA 43&deg;</b>)<br><b>Heading:</b> 233&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 10.02 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(24);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-283px; top:1355px;" 
+	onmouseover="updi(event,'2013-11-09 09:20 UTC (T+18:50)<br>Distances:&nbsp;201.2nm/2235.9nm<br><b>Wind:</b> 284&deg; 15.9 kt (<b>TWA 45&deg;</b>)<br><b>Heading:</b> 239&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 10.09 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(24);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-307px; top:1365px;" 
+	onmouseover="updi(event,'2013-11-09 12:40 UTC (T+22:10)<br>Distances:&nbsp;236.8nm/2201.1nm<br><b>Wind:</b> 291&deg; 18.2 kt (<b>TWA 55&deg;</b>)<br><b>Heading:</b> 236&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 11.33 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(24);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-310px; top:1366px;" 
+	onmouseover="updi(event,'2013-11-09 13:00 UTC (T+22:30)<br>Distances:&nbsp;240.5nm/2197.5nm<br><b>Wind:</b> 291&deg; 18.7 kt (<b>TWA 51&deg;</b>)<br><b>Heading:</b> 240&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 11.06 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(24);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-356px; top:1385px;" 
+	onmouseover="updi(event,'2013-11-09 19:00 UTC (T+28:30)<br>Distances:&nbsp;309.2nm/2129.9nm<br><b>Wind:</b> 281&deg; 30.0 kt (<b>TWA 53&deg;</b>)<br><b>Heading:</b> 228&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 12.48 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(36);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-398px; top:1411px;" 
+	onmouseover="updi(event,'2013-11-10 01:00 UTC (T+34:30)<br>Distances:&nbsp;382.6nm/2060.6nm<br><b>Wind:</b> 282&deg; 27.6 kt (<b>TWA 50&deg;</b>)<br><b>Heading:</b> 232&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 11.78 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(36);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-440px; top:1434px;" 
+	onmouseover="updi(event,'2013-11-10 07:00 UTC (T+40:30)<br>Distances:&nbsp;451.9nm/1994.3nm<br><b>Wind:</b> 276&deg; 17.4 kt (<b>TWA 44&deg;</b>)<br><b>Heading:</b> 232&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 10.20 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(48);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-474px; top:1448px;" 
+	onmouseover="updi(event,'2013-11-10 13:00 UTC (T+46:30)<br>Distances:&nbsp;503.9nm/1942.4nm<br><b>Wind:</b> 266&deg; 16.1 kt (<b>TWA 36&deg;</b>)<br><b>Heading:</b> 302&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 8.17 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(48);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-512px; top:1431px;" 
+	onmouseover="updi(event,'2013-11-10 19:00 UTC (T+52:30)<br>Distances:&nbsp;529.1nm/1908.1nm<br><b>Wind:</b> 232&deg; 20.3 kt (<b>TWA 58&deg;</b>)<br><b>Heading:</b> 290&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 11.88 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(60);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-566px; top:1418px;" 
+	onmouseover="updi(event,'2013-11-11 01:00 UTC (T+58:30)<br>Distances:&nbsp;580.3nm/1853.8nm<br><b>Wind:</b> 221&deg; 23.2 kt (<b>TWA 67&deg;</b>)<br><b>Heading:</b> 288&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 13.54 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(60);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-628px; top:1405px;" 
+	onmouseover="updi(event,'2013-11-11 07:00 UTC (T+64:30)<br>Distances:&nbsp;643.5nm/1794.5nm<br><b>Wind:</b> 218&deg; 23.8 kt (<b>TWA 64&deg;</b>)<br><b>Heading:</b> 282&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 13.21 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(72);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-686px; top:1397px;" 
+	onmouseover="updi(event,'2013-11-11 13:00 UTC (T+70:30)<br>Distances:&nbsp;707.6nm/1738.2nm<br><b>Wind:</b> 221&deg; 20.9 kt (<b>TWA 57&deg;</b>)<br><b>Heading:</b> 278&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 11.87 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(72);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-739px; top:1392px;" 
+	onmouseover="updi(event,'2013-11-11 19:00 UTC (T+76:30)<br>Distances:&nbsp;769.4nm/1686.0nm<br><b>Wind:</b> 321&deg; 18.8 kt (<b>TWA 88&deg;</b>)<br><b>Heading:</b> 233&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 14.91 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(84);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-794px; top:1422px;" 
+	onmouseover="updi(event,'2013-11-12 01:00 UTC (T+82:30)<br>Distances:&nbsp;856.7nm/1594.4nm<br><b>Wind:</b> 328&deg; 16.9 kt (<b>TWA 94&deg;</b>)<br><b>Heading:</b> 234&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 14.66 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(84);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-848px; top:1450px;" 
+	onmouseover="updi(event,'2013-11-12 07:00 UTC (T+88:30)<br>Distances:&nbsp;942.2nm/1506.8nm<br><b>Wind:</b> 90&deg; 8.8 kt (<b>TWA 140&deg;</b>)<br><b>Heading:</b> 230&deg; <b>Sail:</b> Spi<br><b>Boat Speed:</b> 9.18 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(96);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-885px; top:1469px;" 
+	onmouseover="updi(event,'2013-11-12 13:00 UTC (T+94:30)<br>Distances:&nbsp;1003.2nm/1444.8nm<br><b>Wind:</b> 110&deg; 10.9 kt (<b>TWA 134&deg;</b>)<br><b>Heading:</b> 244&deg; <b>Sail:</b> Spi<br><b>Boat Speed:</b> 11.17 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(96);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-932px; top:1486px;" 
+	onmouseover="updi(event,'2013-11-12 19:00 UTC (T+100:30)<br>Distances:&nbsp;1073.1nm/1376.7nm<br><b>Wind:</b> 174&deg; 11.6 kt (<b>TWA 96&deg;</b>)<br><b>Heading:</b> 270&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 12.26 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(108);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-986px; top:1487px;" 
+	onmouseover="updi(event,'2013-11-13 01:00 UTC (T+106:30)<br>Distances:&nbsp;1139.5nm/1320.4nm<br><b>Wind:</b> 182&deg; 12.7 kt (<b>TWA 90&deg;</b>)<br><b>Heading:</b> 272&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 12.47 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(108);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-1037px; top:1490px;" 
+	onmouseover="updi(event,'2013-11-13 07:00 UTC (T+112:30)<br>Distances:&nbsp;1205.0nm/1266.1nm<br><b>Wind:</b> 167&deg; 6.3 kt (<b>TWA 84&deg;</b>)<br><b>Heading:</b> 251&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 9.47 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(120);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-1076px; top:1500px;" 
+	onmouseover="updi(event,'2013-11-13 13:00 UTC (T+118:30)<br>Distances:&nbsp;1261.7nm/1215.2nm<br><b>Wind:</b> 162&deg; 7.1 kt (<b>TWA 84&deg;</b>)<br><b>Heading:</b> 246&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 9.97 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(120);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-1118px; top:1514px;" 
+	onmouseover="updi(event,'2013-11-13 19:00 UTC (T+124:30)<br>Distances:&nbsp;1324.5nm/1157.9nm<br><b>Wind:</b> 155&deg; 12.8 kt (<b>TWA 87&deg;</b>)<br><b>Heading:</b> 242&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 12.33 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(132);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-1165px; top:1533px;" 
+	onmouseover="updi(event,'2013-11-14 01:00 UTC (T+130:30)<br>Distances:&nbsp;1399.0nm/1089.1nm<br><b>Wind:</b> 159&deg; 14.5 kt (<b>TWA 83&deg;</b>)<br><b>Heading:</b> 242&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 12.73 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(132);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-1212px; top:1553px;" 
+	onmouseover="updi(event,'2013-11-14 07:00 UTC (T+136:30)<br>Distances:&nbsp;1474.4nm/1020.7nm<br><b>Wind:</b> 184&deg; 21.9 kt (<b>TWA 74&deg;</b>)<br><b>Heading:</b> 258&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 14.16 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(144);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-1271px; top:1562px;" 
+	onmouseover="updi(event,'2013-11-14 13:00 UTC (T+142:30)<br>Distances:&nbsp;1554.8nm/961.2nm<br><b>Wind:</b> 185&deg; 23.4 kt (<b>TWA 73&deg;</b>)<br><b>Heading:</b> 258&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 14.41 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(144);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-1331px; top:1572px;" 
+	onmouseover="updi(event,'2013-11-14 19:00 UTC (T+148:30)<br>Distances:&nbsp;1637.1nm/905.4nm<br><b>Wind:</b> 329&deg; 28.2 kt (<b>TWA 118&deg;</b>)<br><b>Heading:</b> 211&deg; <b>Sail:</b> Spi<br><b>Boat Speed:</b> 20.28 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(156);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-1375px; top:1632px;" 
+	onmouseover="updi(event,'2013-11-15 01:00 UTC (T+154:30)<br>Distances:&nbsp;1751.1nm/776.7nm<br><b>Wind:</b> 348&deg; 34.4 kt (<b>TWA 135&deg;</b>)<br><b>Heading:</b> 213&deg; <b>Sail:</b> Spi<br><b>Boat Speed:</b> 24.58 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(156);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-1422px; top:1700px;" 
+	onmouseover="updi(event,'2013-11-15 07:00 UTC (T+160:30)<br>Distances:&nbsp;1880.2nm/632.1nm<br><b>Wind:</b> 35&deg; 21.1 kt (<b>TWA 141&deg;</b>)<br><b>Heading:</b> 254&deg; <b>Sail:</b> Spi<br><b>Boat Speed:</b> 17.90 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(168);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-1451px; top:1739px;" 
+	onmouseover="updi(event,'2013-11-15 13:00 UTC (T+166:30)<br>Distances:&nbsp;1959.4nm/548.2nm<br><b>Wind:</b> 40&deg; 21.0 kt (<b>TWA 151&deg;</b>)<br><b>Heading:</b> 191&deg; <b>Sail:</b> Spi<br><b>Boat Speed:</b> 16.07 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(168);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-1463px; top:1792px;" 
+	onmouseover="updi(event,'2013-11-15 19:00 UTC (T+172:30)<br>Distances:&nbsp;2034.8nm/449.7nm<br><b>Wind:</b> 72&deg; 20.1 kt (<b>TWA 140&deg;</b>)<br><b>Heading:</b> 212&deg; <b>Sail:</b> Spi<br><b>Boat Speed:</b> 17.57 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(180);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-1497px; top:1839px;" 
+	onmouseover="updi(event,'2013-11-16 01:00 UTC (T+178:30)<br>Distances:&nbsp;2132.6nm/348.5nm<br><b>Wind:</b> 84&deg; 16.3 kt (<b>TWA 122&deg;</b>)<br><b>Heading:</b> 206&deg; <b>Sail:</b> Spi<br><b>Boat Speed:</b> 15.27 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(180);">
+<img src="img/dot.png" class="abs" style="z-index: 1; left :-1517px; top:1875px;" 
+	onmouseover="updi(event,'2013-11-16 07:00 UTC (T+184:30)<br>Distances:&nbsp;2201.7nm/274.5nm<br><b>Wind:</b> 0&deg; 0.0 kt (<b>TWA 136&deg;</b>)<br><b>Heading:</b> 224&deg; <b>Sail:</b> Jib<br><b>Boat Speed:</b> 0.00 kts','220px')" onmouseout="cleari()" 
+	onmousedown="show_wind(180);">
+<img src="img/flag.png" class="abs" style="left :-1557px; top:1992px;">
+</div>
+<div id="friends_layer" >
+
+</div>
+<div id="track_layer"><canvas id="track_canvas"></canvas></div> 
+</div>
+<div id="help_div"></div>
+<div id="cmenu" class="contextmenu" style="display: none;">
+	<div class="menuitem" style="width:150px" onmouseover="over(event,this)"
+			onmouseout="out(event,this)" onmousedown="set_pos(0,1)">Set as starting point</div>
+	<div class="menuitem" style="width:150px" onmouseover="over(event,this)"
+			onmouseout="out(event,this)" onmousedown="set_pos(1,1)">Set as destination</div>
+    <div class="divider"></div> 
+	<div class="menuitem" style="width:150px" onmouseover="over(event,this)"
+                   onmouseout="out(event,this)" onmousedown="set_pos(1,0,-48.647,-26.9135)">Go to Itajai</div>
+	<div class="divider"></div> 
+	<div class="menuitem" style="width:150px" onmouseover="over(event,this)" onmouseout="out(event,this)" 
+			onmousedown="toggle_pro()">
+			<input type="checkbox" id="tpb" style="border:none; margin-left: 0; cursor:pointer;" onmousedown="cancel_event"
+			> Pro sails
+	</div>
+	<div class="menuitem" style="width:150px" onmouseover="over(event,this)" onmouseout="out(event,this)" 
+			onmousedown="toggle_gates()">
+			<input type="checkbox" id="tgb" style="border:none; margin-left: 0; cursor:pointer;" onmousedown="cancel_event"
+			> Ignore gates
+	</div>
+	<div class="menuitem" style="display:block; width:150px;" onmouseover="over(event,this)" onmouseout="out(event,this)" 
+			onmousedown="toggle_tacks()">
+			<input type="checkbox" id="ttb" style="border:none; margin-left: 0; cursor:pointer;" onmousedown="cancel_event"
+			> Timeshift
+	</div>
+	<div class="divider"></div> 
+		<div class="menuitem" style="width:150px" onmouseover="over(event,this)"
+                        onmouseout="out(event,this)" onmousedown="find_boat()">Locate boat</div>
+</div>
+</div>
+<div id="statusbar">
+<div class="statusitem" style="width: 10em">DST:<span id="span_dd1"></span></div>
+<div class="statusitem" style="width: 10em"><span id="span_lat"></span>&nbsp;<span id="span_lon"></span></div>
+<div class="statusitem">Fri Nov  8 14:30 UTC</div>
+
+<div class="statusitem" id="debug_div"></div>
+<div class="statusitem" style="float:right; margin-right: 1px; width:10em">DTF:<span id="span_dd2"></span></div>
+<div class="statusitem" style="float:right;" title="Last file:gfs.t06z+192h">GFS:06Z</div>
+
+</div>
+
+<div id="amenu" class="contextmenu" style="display:none;">
+	<div class="menuitem" style="width:150px">Router algorithm:</div>
+    <div class="divider"></div> 
+	
+</div>
+</body>
+</html>

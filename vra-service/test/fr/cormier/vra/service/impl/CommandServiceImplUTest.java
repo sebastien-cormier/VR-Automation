@@ -42,7 +42,7 @@ public class CommandServiceImplUTest extends AbstractServiceUTest {
 
 	private String getTestUrl() {
 		return "http://vendeeglobevirtuel.virtualregatta.com/core/Service/ServiceCaller.php?service=Update"+
-				"&id_user="+TEST_VR_USER_ID+"&cap="+TEST_VALUE+"&r="+TEST_R+"&checksum="+TEST_CHECKSUM;
+				"&id_user="+TEST_VR_USER_ID+"&id_boat="+TEST_VR_USER_ID+"&cap="+TEST_VALUE+"&r="+TEST_R+"&checksum="+TEST_CHECKSUM;
 	
 	}
 	

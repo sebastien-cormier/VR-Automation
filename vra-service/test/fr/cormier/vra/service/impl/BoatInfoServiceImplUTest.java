@@ -7,7 +7,7 @@ import org.junit.Test;
 public class BoatInfoServiceImplUTest extends AbstractServiceUTest {
 
 	@Test
-	public void checkCap_ShouldBeLaunch() {
+	public void retrieveBoatPosition_ShouldBeLaunch() {
 		
 		Assert.assertTrue(true);
 	}
