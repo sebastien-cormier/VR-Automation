@@ -1,5 +1,6 @@
 package fr.cormier.domain.external;
 
+
 public class Position {
 
 	private double latitude;

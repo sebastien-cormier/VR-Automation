@@ -60,7 +60,7 @@ public class Launcher {
 		}
 		context.setEnvironment(configurableEnvironment);
 
-		PropertyConfigurator.configure("log4j.properties");
+		PropertyConfigurator.configure("resources/log4j.properties");
 
 		logger.info("Starting launcher...");
 

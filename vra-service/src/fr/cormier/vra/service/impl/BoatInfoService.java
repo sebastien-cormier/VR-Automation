@@ -2,6 +2,7 @@ package fr.cormier.vra.service.impl;
 
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,7 +15,10 @@ import fr.cormier.domain.xml.getuser.BoatsPositionWrapper;
 import fr.cormier.domain.xml.getuser.Position;
 import fr.cormier.domain.xml.getuser.Result;
 import fr.cormier.domain.xml.getuser.User;
+import fr.cormier.utils.MailUtils;
 import fr.cormier.vra.service.IBoatInfoService;
+import fr.cormier.vra.service.IRaceService;
+import fr.cormier.vra.service.IUserRaceService;
 
 @Service("serviceBoatInfo")
 public class BoatInfoService implements IBoatInfoService {
@@ -22,7 +26,10 @@ public class BoatInfoService implements IBoatInfoService {
 	private final static Log logger = LogFactory.getLog(BoatInfoService.class);
 	
 	@Autowired
-	private UserRaceServiceImpl serviceUserRace = null;
+	private IUserRaceService serviceUserRace = null;
+	
+	@Autowired
+	private IRaceService serviceRace = null;
 	
 	private boolean testMode = false;
 			
@@ -43,21 +50,6 @@ public class BoatInfoService implements IBoatInfoService {
 	}
 
 
-
-	public boolean checkCap(int cap) throws Exception {
-		Result result;
-		if( testMode ) {
-			result = getFakeResult();
-		} else {
-			Serializer serializer = new Persister();
-			URL gotoUrl = new URL("http://frozen.virtualregatta.com/core/Service/ServiceCaller.php?service=GetFriendsList&id_user=1557492&checksum=e66559616ae215e6848821cb5f54635b00b20417");
-			InputStreamReader isr = new InputStreamReader(gotoUrl.openStream());
-			result = serializer.read(Result.class, isr);
-			isr.close();
-		}
-		
-		return cap==result.getUser().getPosition().getCap();
-	}
 	
 	public BoatsPositionWrapper retrieveBoatPosition(int vrUserId, int raceId) {
 		
@@ -80,6 +72,10 @@ public class BoatInfoService implements IBoatInfoService {
 		} catch(Exception e) {
 			e.printStackTrace();
 			logger.error("Can not retrieve boat position for vruser "+vrUserId+", race id "+raceId);
+			MailUtils.sendEmail("sebastien.cormier@gmail.com", "VRA ERROR - Can not retrieve boat position !!!", 
+					"Date : "+new Date()+"\n"+
+					"Error : Can not retrieve boat position for user "+vrUserId+" on race "+serviceRace.getRaceName(raceId)+"\n\n\n"+
+					e.getMessage());
 			return null;
 		}
 	}

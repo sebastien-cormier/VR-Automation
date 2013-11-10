@@ -8,7 +8,7 @@ public class Position {
 	@Attribute
 	private String date;
 	
-	@Attribute
+	@Attribute(required=false)
 	private String dateGMT;
 	
 	@Element
@@ -47,6 +47,38 @@ public class Position {
 	@Element(required=false)
 	private String temps_etape;
 	
+	@Element(required=false)
+	private int id_parcours;
+	
+	@Element(required=false)
+	private String id_parcours_xml;
+	
+	
+	
+	public String getId_parcours_xml() {
+		return id_parcours_xml;
+	}
+
+	public void setId_parcours_xml(String id_parcours_xml) {
+		this.id_parcours_xml = id_parcours_xml;
+	}
+
+	public String getDateGMT() {
+		return dateGMT;
+	}
+
+	public void setDateGMT(String dateGMT) {
+		this.dateGMT = dateGMT;
+	}
+
+	public int getId_parcours() {
+		return id_parcours;
+	}
+
+	public void setId_parcours(int id_parcours) {
+		this.id_parcours = id_parcours;
+	}
+
 	public String getIsArrived() {
 		return IsArrived;
 	}

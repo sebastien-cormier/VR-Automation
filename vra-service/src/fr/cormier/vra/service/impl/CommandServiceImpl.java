@@ -123,9 +123,12 @@ public class CommandServiceImpl implements ICommandService {
 		stringUrl.append(PARAM_SEPARATOR);
 		stringUrl.append(PARAM_USER_ID+"="+command.getVrUserId());
 		
-		stringUrl.append(PARAM_SEPARATOR);
-		stringUrl.append(PARAM_BOAT_ID+"="+command.getVrUserId());
-
+		/*HACK pour la course clipper : pas de boat_id*/
+		if( command.getRaceId()!=8 ) {
+			stringUrl.append(PARAM_SEPARATOR);
+			stringUrl.append(PARAM_BOAT_ID+"="+command.getVrUserId());
+		}
+		
 		stringUrl.append(PARAM_SEPARATOR);
 		if( CommandTypeEnum.HEADING.equals(command.getCommandType()) ) {
 			stringUrl.append(PARAM_CAP+"="+command.getValue());
@@ -187,8 +190,9 @@ public class CommandServiceImpl implements ICommandService {
 			} else {
 				try {
 					String response = HttpUtils.wget(generateStringUrl(command));
-					if( response.contains("state=KO")) logger.info("KKKKOOOOOO");
+					if( response.contains("state=KO")) logger.info("KKKKOOOOOO\n"+generateStringUrl(command));
 					if( response.contains("state=OK")) logger.info("OOOOKKKKK");
+					
 					if( !checkCommand(command) ) {
 						logger.error("Abording command, sending error message...");
 						logger.error("URL:"+generateStringUrl(command));
