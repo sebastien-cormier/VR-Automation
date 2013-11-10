@@ -10,7 +10,7 @@ public interface IRoutingService {
 	
 	public void setTestMode(boolean testMode);
 	
-	public RoutingCommand retrieveCurrentRoutingCommand(Position position);
+	public RoutingCommand retrieveCurrentRoutingCommand(UserRace userRace, Position position);
 
 	public void setMockHtml(String string);
 

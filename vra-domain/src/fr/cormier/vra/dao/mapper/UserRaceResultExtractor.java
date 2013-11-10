@@ -22,6 +22,7 @@ public class UserRaceResultExtractor implements ResultSetExtractor<UserRace> {
 	    race.setRaceId(rs.getInt("raceId"));
 	    race.setMode(rs.getString("mode"));
 	    race.setUserService(rs.getString("userService"));
+	    race.setZezoUrlTemplate(rs.getString("zezoUrlTemplate"));
 	    return race;
 	  }
 	  

@@ -14,9 +14,10 @@ import fr.cormier.domain.xml.getuser.BoatsPositionWrapper;
 import fr.cormier.domain.xml.getuser.Position;
 import fr.cormier.domain.xml.getuser.Result;
 import fr.cormier.domain.xml.getuser.User;
+import fr.cormier.vra.service.IBoatInfoService;
 
 @Service("serviceBoatInfo")
-public class BoatInfoService {
+public class BoatInfoService implements IBoatInfoService {
 
 	private final static Log logger = LogFactory.getLog(BoatInfoService.class);
 	
@@ -26,7 +27,7 @@ public class BoatInfoService {
 	private boolean testMode = false;
 			
 	public BoatInfoService() {
-		testMode = true;
+		testMode = false;
 	}
 	
 	
@@ -38,6 +39,7 @@ public class BoatInfoService {
 
 
 	public void setTestMode(boolean testMode) {
+		this.testMode = testMode;
 	}
 
 

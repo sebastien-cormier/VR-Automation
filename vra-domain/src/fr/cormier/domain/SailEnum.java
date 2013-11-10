@@ -1,5 +1,8 @@
 package fr.cormier.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum SailEnum {
 	
 	JIB(1),
@@ -53,6 +56,13 @@ public enum SailEnum {
 			case 2: return "SPI";
 			default: return null;
 			}
+	}
+	
+	public static List<SailEnum> getAllSails() {
+		List<SailEnum> allSails = new ArrayList<SailEnum>();
+		allSails.add(JIB);
+		allSails.add(SPI);
+		return allSails;
 	}
 	
 }

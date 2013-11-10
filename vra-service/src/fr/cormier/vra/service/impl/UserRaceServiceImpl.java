@@ -23,6 +23,10 @@ public class UserRaceServiceImpl implements IUserRaceService {
 		return daoUserRace.selectByKey(vrUserId, raceId).getUserService();
 	}
 
+	public UserRace getUserRace(int vrUserId, int raceId) {
+		return daoUserRace.selectByKey(vrUserId, raceId);
+	}
+
 	public List<UserRace> retrieveAllScheduleMode() {
 		return daoUserRace.selectAllSchedule();
 	}

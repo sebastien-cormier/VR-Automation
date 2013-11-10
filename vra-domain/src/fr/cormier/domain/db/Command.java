@@ -90,7 +90,7 @@ public class Command {
 	}
 	
 	public String toString() {
-		return "Command("+commandId+","+commandType+", user "+vrUserId+", race "+raceId+")";
+		return "Command("+commandId+","+commandType+"("+value+"), user "+vrUserId+", race "+raceId+")";
 	}
 	
 	public Command clone() {

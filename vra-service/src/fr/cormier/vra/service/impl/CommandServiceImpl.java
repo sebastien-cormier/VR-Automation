@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,9 +22,11 @@ import fr.cormier.domain.SailEnum;
 import fr.cormier.domain.db.Command;
 import fr.cormier.domain.db.CommandTypeEnum;
 import fr.cormier.domain.db.Race;
+import fr.cormier.domain.xml.getuser.BoatsPositionWrapper;
 import fr.cormier.utils.EqualsUtils;
 import fr.cormier.utils.Fileutils;
 import fr.cormier.utils.HttpUtils;
+import fr.cormier.utils.MailUtils;
 import fr.cormier.vra.dao.ICommandDao;
 import fr.cormier.vra.service.ICommandService;
 
@@ -37,6 +43,9 @@ public class CommandServiceImpl implements ICommandService {
 	
 	@Autowired
 	private AbstractApplicationContext context;
+	
+	@Autowired
+	private BoatInfoService serviceBoatInfo;
 	
 	/**
 	 * Create a new command entry if it doesn't exist
@@ -115,6 +124,9 @@ public class CommandServiceImpl implements ICommandService {
 		stringUrl.append(PARAM_USER_ID+"="+command.getVrUserId());
 		
 		stringUrl.append(PARAM_SEPARATOR);
+		stringUrl.append(PARAM_BOAT_ID+"="+command.getVrUserId());
+
+		stringUrl.append(PARAM_SEPARATOR);
 		if( CommandTypeEnum.HEADING.equals(command.getCommandType()) ) {
 			stringUrl.append(PARAM_CAP+"="+command.getValue());
 		} else {
@@ -160,10 +172,13 @@ public class CommandServiceImpl implements ICommandService {
 
 	public boolean runCommand(int vrUserId, int raceId, CommandTypeEnum commandType,
 			String heading) {
+		
 		Command command = daoCommand.findByValues(vrUserId, raceId, String.valueOf(commandType),
 				heading);
+		
 		if( command==null ) {
 			return false;
+			
 		} else {
 			
 			if( isTestMode() ) {
@@ -171,16 +186,80 @@ public class CommandServiceImpl implements ICommandService {
 				
 			} else {
 				try {
-					HttpUtils.wget(generateStringUrl(command));
+					String response = HttpUtils.wget(generateStringUrl(command));
+					if( response.contains("state=KO")) logger.info("KKKKOOOOOO");
+					if( response.contains("state=OK")) logger.info("OOOOKKKKK");
+					if( !checkCommand(command) ) {
+						logger.error("Abording command, sending error message...");
+						logger.error("URL:"+generateStringUrl(command));
+						BoatsPositionWrapper boatsPositionWrapper = serviceBoatInfo.retrieveBoatPosition(vrUserId, raceId);
+						MailUtils.sendEmail("sebastien.cormier@gmail.com", 
+								"VRA - Error when execution command "+command.getCommandType()+ " with value "+command.getValue(), 
+								"Date : "+new Date()+"\n\n" +
+								"Race : "+serviceRace.getRaceName(raceId)+"\n\n" +
+								"Current Heading : "+boatsPositionWrapper.getHeading()+"\n"+
+								"Current Sail : "+SailEnum.getStringValue(boatsPositionWrapper.getSail())+"\n"+
+								"Current State : "+boatsPositionWrapper.getState()+"\n\n" +
+								"Command to apply : "+command.toString()
+								);
+					}
+					
 				} catch (IOException e) {
 					logger.error("Could not execute command "+command.getCommandId()+" for url : "+generateStringUrl(command));
 					return false;
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 			return true;
 		}
 	}
 	
+	/**
+	 * Check if command has been applied and do another attempt if necessary
+	 * @param command
+	 * @return
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	private boolean checkCommand(Command command) throws IOException, InterruptedException {
+		
+		/* duration in second for sleep between each attemp */
+		int[] wait = {1,2,2,2,2,2,2,2,2,2,2,2,2,4,4,4,4,10,10,10,10,20,20,20};
+		//int[] wait = {1};
+		
+		for(int i=0; i<wait.length; i++) {
+
+			BoatsPositionWrapper boatPos = serviceBoatInfo.retrieveBoatPosition(command.getVrUserId(), command.getRaceId());
+			
+			if( CommandTypeEnum.HEADING.equals(command.getCommandType())) {
+				
+				if( boatPos.getHeading()==Integer.parseInt(command.getValue()) ) {
+					logger.info("Heading on "+command.getValue()+" is confirmed");
+					return true;
+				} 
+			} else if( CommandTypeEnum.SAIL.equals(command.getCommandType())) {
+				
+				if( boatPos.getSail()==Integer.parseInt(command.getValue()) ) {
+					logger.info("Sail ("+command.getValue()+") is confirmed");
+					return true;
+				}
+			}
+			
+			logger.info("  -- waiting "+wait[i]+" sec for next retry ....");
+			Thread.sleep(wait[i]*1000);
+			
+			logger.info("  -- Attempt number "+(i+2)+"...");
+			String response = HttpUtils.wget(generateStringUrl(command));
+			if( response.contains("state=KO")) logger.info("KKKKOOOOOO");
+			if( response.contains("state=OK")) logger.info("OOOOKKKKK");
+			
+		} 
+		return false;
+	
+	}
+
 	private boolean isTestMode() {
 		String activeProfiles[] = context.getEnvironment().getActiveProfiles();
 		if( activeProfiles!=null ) {
@@ -221,6 +300,43 @@ public class CommandServiceImpl implements ICommandService {
 			value = SailEnum.getStringValue(Integer.parseInt(value));
 		}
 		return targetDir+"/"+raceName+"_"+command.getVrUserId()+"_"+command.getCommandType()+"_"+value+".bat";
+	}
+
+	@Override
+	public Map<CommandTypeEnum, List<String>> retrieveMissingCommands(int userId, int raceId) {
+		
+		Map<String,Command> headingCommands = new HashMap<String,Command>();
+		Map<String,Command> sailCommands = new HashMap<String,Command>();
+		
+		List<Command> allCommands = daoCommand.select(userId, raceId);
+		
+		for (Command command : allCommands) {
+			if( CommandTypeEnum.HEADING.equals(command.getCommandType()) ) {
+				headingCommands.put(command.getValue(), command);
+			} else if( CommandTypeEnum.SAIL.equals(command.getCommandType()) ) {
+				sailCommands.put(command.getValue(), command);
+			}
+		}
+		
+		Map<CommandTypeEnum, List<String>> result = new HashMap<CommandTypeEnum, List<String>>();
+		
+		List<String> missingHeading = new ArrayList<String>();
+		for(int heading=0; heading<360; heading++) {
+			if( headingCommands.get(String.valueOf(heading))==null ) {
+				missingHeading.add(String.valueOf(heading));
+			}
+		}
+		result.put(CommandTypeEnum.HEADING, missingHeading);
+		
+		List<String> missingSails = new ArrayList<String>();
+		for(SailEnum sail : SailEnum.getAllSails() ) {
+			if( sailCommands.get(String.valueOf(sail.getValue()))==null ) {
+				missingSails.add(sail.getStringValue());
+			}
+		}
+		result.put(CommandTypeEnum.SAIL, missingSails);
+		
+		return result;
 	}
 	
 }

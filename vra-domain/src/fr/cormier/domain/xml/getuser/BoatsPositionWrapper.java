@@ -8,6 +8,14 @@ public class BoatsPositionWrapper {
 		this.result = result;
 	}
 	
+	public String getState() {
+		if( result!=null ) {
+			return result.getState();
+		} else {
+			return "N/A";
+		}
+	}
+	
 	public int getHeading() {
 		if( result!=null && result.getUser()!=null && result.getUser().getPosition()!=null ) {
 			return result.getUser().getPosition().getCap();

@@ -22,4 +22,6 @@
 
     <bean id="importCommand" class="fr.cormier.vra.batch.ImportCommand" />
 
+	<bean id="checkCommand" class="fr.cormier.vra.batch.CheckCommand" />
+
 </beans>

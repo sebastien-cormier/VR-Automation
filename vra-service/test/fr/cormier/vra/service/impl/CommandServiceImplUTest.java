@@ -2,11 +2,12 @@ package fr.cormier.vra.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
-
 import org.junit.Test;
 
+import fr.cormier.domain.SailEnum;
 import fr.cormier.domain.db.Command;
 import fr.cormier.domain.db.CommandTypeEnum;
 import fr.cormier.vra.service.ICommandService;
@@ -126,5 +127,15 @@ public class CommandServiceImplUTest extends AbstractServiceUTest {
 		
 	}
 	
-	
+	@Test
+	public void retrieveMissingCommands_returnCommands() {
+		
+		// action		
+		Map<CommandTypeEnum, List<String>> result = serviceCommande.retrieveMissingCommands(123, 456);
+		
+		// assert
+		Assert.assertEquals(result.get(CommandTypeEnum.HEADING).size(), 300);
+		Assert.assertEquals(result.get(CommandTypeEnum.SAIL).size(), 0);
+		
+	}
 }

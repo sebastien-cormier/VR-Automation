@@ -20,7 +20,6 @@ import fr.cormier.vra.service.IUserRaceService;
 
 public class Launcher {
 
-	public static final int INTERVAL_SEC = 500;
 
 	private final static Log logger = LogFactory.getLog(Launcher.class);
 
@@ -113,7 +112,7 @@ public class Launcher {
 
 		List<UserRace> userRaces = userRaceService.retrieveAllZezoAutoRouting();
 
-		// Traitement des schedule � traiter
+		// Traitement des schedule traiter
 		serviceRouting.setTestMode(testMode);
 		serviceRouting.processZezoRouting(userRaces);
 
@@ -144,10 +143,10 @@ public class Launcher {
 
 		List<UserRace> userRaces = userRaceService.retrieveAllScheduleMode();
 
-		// Traitement des schedule � traiter
+		// Traitement des schedule a traiter
 		scheduleService.processScheduleRotation(userRaces);
 
-		// V�rification des schedule en cours
+		// Verification des schedule en cours
 		scheduleService.checkAllCurrentSchedule(userRaces);
 
 	}

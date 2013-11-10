@@ -1,12 +1,15 @@
 package fr.cormier.vra.service;
 
 import java.util.List;
+import java.util.Map;
 
 import fr.cormier.domain.db.Command;
 import fr.cormier.domain.db.CommandTypeEnum;
 
 public interface ICommandService {
 			
+	public static final int NB_MAX_RETRY = 20;
+	
 	public static final String PROTOCOL = "http://";
 	
 	public static final String VR_UPDATE_SERVICE = "/core/Service/ServiceCaller.php?service=Update";
@@ -22,6 +25,8 @@ public interface ICommandService {
 	public static final String PARAM_SAIL = "voile";
 	
 	public static final String PARAM_USER_ID = "id_user";
+
+	public static final String PARAM_BOAT_ID = "id_boat";
 
 	public int addCommand(Command command);
 	
@@ -39,5 +44,7 @@ public interface ICommandService {
 	public List<Command> getCommands(int vrUserId, int raceId);
 
 	public void generateCommandFile(String targetDir, Command command);
+
+	public Map<CommandTypeEnum, List<String>> retrieveMissingCommands(int userId, int raceId);
 	
 }

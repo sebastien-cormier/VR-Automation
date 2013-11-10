@@ -753,6 +753,8 @@ CREATE TABLE `UserRace` (
   PRIMARY KEY (`vrUserId`,`raceId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
+ALTER Table UserRace ADD `zezoUrlTemplate` varchar(512) COLLATE utf8_swedish_ci DEFAULT NULL;
+
 -- ----------------------------
 -- Records of UserRace
 -- ----------------------------

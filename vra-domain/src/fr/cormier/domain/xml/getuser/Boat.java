@@ -29,7 +29,7 @@ public class Boat {
 	private float wind_speed;
 
 	@Element(required=false)
-	private int wind_angle;
+	private float wind_angle;
 
 	@Element(required=false)
 	private int cap;
@@ -103,7 +103,7 @@ public class Boat {
 	public void setWind_speed(float wind_speed) {
 		this.wind_speed = wind_speed;
 	}
-	public int getWind_angle() {
+	public float getWind_angle() {
 		return wind_angle;
 	}
 	public void setWind_angle(int wind_angle) {

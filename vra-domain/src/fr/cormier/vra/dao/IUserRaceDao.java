@@ -12,7 +12,7 @@ import fr.cormier.domain.db.UserRace;
  */
 public interface IUserRaceDao {
 
-	public static final String COLUMNS = "vrUserId, raceId, mode, userService";
+	public static final String COLUMNS = "vrUserId, raceId, mode, userService, zezoUrlTemplate";
 
 	public static final String TABLENAME = "UserRace";
 

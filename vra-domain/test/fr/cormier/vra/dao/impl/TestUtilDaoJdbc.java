@@ -71,6 +71,7 @@ public class TestUtilDaoJdbc extends JdbcDaoSupport {
 				"  `raceId` int(11) NOT NULL, "+
 				"  `mode` enum('SCHEDULE','WAYPOINTS','SPEEDREG') COLLATE utf8_swedish_ci NOT NULL DEFAULT 'SCHEDULE', "+
 				"  `userService` varchar(512) COLLATE utf8_swedish_ci DEFAULT NULL, "+
+				"  `zezoUrlTemplate` varchar(512) COLLATE utf8_swedish_ci DEFAULT NULL, "+
 				"  PRIMARY KEY (`vrUserId`,`raceId`) "+
 				") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;");
 
@@ -173,9 +174,9 @@ public class TestUtilDaoJdbc extends JdbcDaoSupport {
 	}
 
 	public void createUserRace(final int vrUserId, final int raceId,
-			final String mode, final String userService) {
+			final String mode, final String userService, final String zezoUrlTemplate) {
 		final String sql = "INSERT INTO UserRace (" + UserRaceDaoJdbcImpl.COLUMNS
-				+ ") VALUES(?,?,?,?)";
+				+ ") VALUES(?,?,?,?,?)";
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
@@ -184,6 +185,7 @@ public class TestUtilDaoJdbc extends JdbcDaoSupport {
 				ps.setInt(2, raceId);
 				ps.setString(3, mode);
 				ps.setString(4, userService);
+				ps.setString(5, zezoUrlTemplate);
 				return ps;
 			}
 		});

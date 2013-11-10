@@ -10,6 +10,8 @@ public interface IUserRaceService {
 	
 	public String getUserService(int vrUserId, int raceId);
 
+	public UserRace getUserRace(int vrUserId, int raceId);
+
 	public List<UserRace> retrieveAllScheduleMode();
 	
 	public List<UserRace> retrieveAll() ;

@@ -30,10 +30,7 @@ public class RoutingServiceImpl implements IRoutingService {
 	private static final String HEADING_FIND_TEMPLATE_START = "<br><b>Heading:</b> ";
 	
 	private static final String SAIL_FIND_TEMPLATE_START = "<b>Sail:</b> ";
-	
-	//private static final String ZEZO_URL_TEMPLATE = "http://sail.zezo.org/austral/chart.pl?lat=@LATITUDE&lon=@LONGITUDE&o=0&wind=0&tlon=-66.9818&tlat=-56.0912&clon=-153.0625&clat=-48.875";
-	private static final String ZEZO_URL_TEMPLATE = "http://sail.zezo.org/fr/chart.pl?lat=@LATITUDE&lon=@LONGITUDE&o=0&wind=0clon=6.71875&clat=43.28125";
-	
+		
 	private boolean testMode = false;
 		
 	@Autowired
@@ -52,14 +49,14 @@ public class RoutingServiceImpl implements IRoutingService {
 	}
 
 	@Override
-	public RoutingCommand retrieveCurrentRoutingCommand(Position position) {
+	public RoutingCommand retrieveCurrentRoutingCommand(UserRace userRace, Position position) {
 
 		String htmlDoc = null;
 		
 		if( mockHtml!=null ) {
 			htmlDoc = mockHtml;
 		} else {
-			htmlDoc = initDocFromZezo(position);
+			htmlDoc = initDocFromZezo(userRace, position);
 			if( htmlDoc==null ) {
 				return null;
 			}
@@ -68,12 +65,12 @@ public class RoutingServiceImpl implements IRoutingService {
 		return parseHtmlDoc(htmlDoc);
 	}
 
-	private String initDocFromZezo(Position position) {
+	private String initDocFromZezo(UserRace userRace, Position position) {
 		
 		if( mockHtml!=null ) {
 			return mockHtml;
 		}
-		String strURL = ZEZO_URL_TEMPLATE.replaceAll("@LATITUDE", String.valueOf(position.getLatitude())).replaceAll("@LONGITUDE", String.valueOf(position.getLongitude()));
+		String strURL = userRace.getZezoUrlTemplate().replaceAll("@LATITUDE", String.valueOf(position.getLatitude())).replaceAll("@LONGITUDE", String.valueOf(position.getLongitude()));
 		logger.info("Contactiong ZEZO on "+strURL);
 		try {
 			InputStream in = new URL( strURL ).openStream();
@@ -150,13 +147,13 @@ public class RoutingServiceImpl implements IRoutingService {
 		
 		for (UserRace userRace : userRaces) {
 			
-			logger.info("Processing zezo auto routing for vr user id "+userRace.getVrUserId());
+			logger.info("Processing zezo auto routing for vr user id "+userRace.getVrUserId()+" on race id"+userRace.getRaceId());
 			
 			BoatsPositionWrapper boatsPositionWrapper = serviceBoatInfo.retrieveBoatPosition(userRace.getVrUserId(), userRace.getRaceId());
 			Position position = new Position();
 			position.setLatitude(boatsPositionWrapper.getLatitude());
 			position.setLongitude(boatsPositionWrapper.getLongitude());
-			RoutingCommand routingCommand = this.retrieveCurrentRoutingCommand(position);
+			RoutingCommand routingCommand = this.retrieveCurrentRoutingCommand(userRace, position);
 			if( routingCommand==null ) {
 				logger.error("Can not retrieve routing, skipping iteration...");
 				continue;

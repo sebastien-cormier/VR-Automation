@@ -1,10 +1,10 @@
 package fr.cormier.vra.service.impl;
 
 import org.junit.Assert;
-
 import org.junit.Test;
 
 import fr.cormier.domain.SailEnum;
+import fr.cormier.domain.db.UserRace;
 import fr.cormier.domain.external.Position;
 import fr.cormier.domain.external.RoutingCommand;
 import fr.cormier.vra.service.IRoutingService;
@@ -29,10 +29,11 @@ public class RoutingCommandServiceImplUTest extends AbstractServiceUTest {
 		Position position = new Position();
 		position.setLatitude(-41.833988566);
 		position.setLongitude(174.645345061);
-		
+		UserRace userRace = new UserRace();
+
 		//action
 		//serviceRouting.setMockHtml("test_zezo_01.htm");
-		RoutingCommand result = serviceRouting.retrieveCurrentRoutingCommand(position);
+		RoutingCommand result = serviceRouting.retrieveCurrentRoutingCommand(userRace,position);
 		
 		//assert
 		RoutingCommand expected = new RoutingCommand();

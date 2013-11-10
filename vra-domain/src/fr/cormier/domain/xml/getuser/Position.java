@@ -8,6 +8,9 @@ public class Position {
 	@Attribute
 	private String date;
 	
+	@Attribute
+	private String dateGMT;
+	
 	@Element
 	private String latitude;
 	

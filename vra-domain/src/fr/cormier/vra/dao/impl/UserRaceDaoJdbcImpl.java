@@ -32,7 +32,7 @@ public class UserRaceDaoJdbcImpl extends JdbcDaoSupport implements IUserRaceDao 
 	public int create(final UserRace userRace) {
 
 		final String sql = "INSERT INTO UserRace (" + COLUMNS
-				+ ") VALUES(?,?,?,?)";
+				+ ") VALUES(?,?,?,?,?)";
 		return getJdbcTemplate().update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(
 					Connection connection) throws SQLException {
@@ -41,6 +41,7 @@ public class UserRaceDaoJdbcImpl extends JdbcDaoSupport implements IUserRaceDao 
 				ps.setInt(2, userRace.getRaceId());
 				ps.setString(3, userRace.getMode());
 				ps.setString(4, userRace.getUserService());
+				ps.setString(5, userRace.getZezoUrlTemplate());
 				return ps;
 			}
 		});

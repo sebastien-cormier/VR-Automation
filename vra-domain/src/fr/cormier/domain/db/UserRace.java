@@ -22,6 +22,16 @@ public class UserRace {
 
 	private String userService;
 	
+	private String zezoUrlTemplate;
+	
+	public String getZezoUrlTemplate() {
+		return zezoUrlTemplate;
+	}
+
+	public void setZezoUrlTemplate(String zezoUrlTemplate) {
+		this.zezoUrlTemplate = zezoUrlTemplate;
+	}
+
 	public int getVrUserId() {
 		return vrUserId;
 	}
