@@ -5,7 +5,7 @@ import org.simpleframework.xml.Element;
 
 public class Position {
 
-	@Attribute
+	@Attribute(required=false)
 	private String date;
 	
 	@Attribute(required=false)
@@ -32,13 +32,13 @@ public class Position {
 	@Element
 	private int classement;
 	
-	@Element
+	@Element(required=false)
 	private int checkpoint;
 	
 	@Element(required=false)
 	private MessagesSystem MessagesSystem;
 	
-	@Element
+	@Element(required=false)
 	private int diffClassement;
 	
 	@Element(required=false)

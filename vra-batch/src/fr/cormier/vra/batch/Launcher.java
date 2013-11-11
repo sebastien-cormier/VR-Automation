@@ -73,17 +73,10 @@ public class Launcher {
 			iteration++;
 
 			logger.info("Iteration #" + iteration + " at " + new Date());
-
-			/*
-			 * logger.info(" Launching scheduled instructions...");
-			 * launcher.runSchedule();
-			 */
+			
 
 			logger.info(" Launching zezo automatic routing...");
 			launcher.runZezoAutoRouting(testMode);
-
-			logger.info(" Launching Monitoring...");
-			launcher.runMonitoring(testMode);
 
 			/*
 			 * logger.info(" Launching waypoints..."); launcher.runWaypoints();

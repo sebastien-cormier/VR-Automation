@@ -9,13 +9,13 @@ import org.simpleframework.xml.Root;
 @Root
 public class Result {
 
-	@Element
+	@Element(required=false)
 	private String state;
 	
 	@Element(required=false)
 	private User user;
 	
-	@Element
+	@Element(required=false)
 	private String checksum;
 	
 	@Element(required=false)

@@ -20,6 +20,8 @@
 
     <bean id="launcher" class="fr.cormier.vra.batch.Launcher" />
 
+    <bean id="scheduleLauncherBatch" class="fr.cormier.vra.batch.ScheduleLauncherBatch" />
+
     <bean id="importCommand" class="fr.cormier.vra.batch.ImportCommand" />
 
 	<bean id="checkCommand" class="fr.cormier.vra.batch.CheckCommand" />

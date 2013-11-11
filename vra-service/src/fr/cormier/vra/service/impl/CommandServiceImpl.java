@@ -29,6 +29,7 @@ import fr.cormier.utils.HttpUtils;
 import fr.cormier.utils.MailUtils;
 import fr.cormier.vra.dao.ICommandDao;
 import fr.cormier.vra.service.ICommandService;
+import fr.cormier.vra.service.IUserRaceService;
 
 @Service("serviceCommande")
 public class CommandServiceImpl implements ICommandService {
@@ -45,8 +46,15 @@ public class CommandServiceImpl implements ICommandService {
 	private AbstractApplicationContext context;
 	
 	@Autowired
+	private IUserRaceService serviceUserRace;
+	
+	@Autowired
 	private BoatInfoService serviceBoatInfo;
 	
+	/* duration in second for sleep between each attemp */
+	private static final int[] WAIT_FOR_SCHEDULE = {1,2,2,2,2,2};
+	private static final int[] WAIT_FOR_ZEZO_ROUTING = {1,2,2,2,2,2,2,2,2,2,2,2,2,4,4,4,4,10,10,10,10,20,20,20};
+					
 	/**
 	 * Create a new command entry if it doesn't exist
 	 * if exist, update r & checksum value
@@ -124,7 +132,7 @@ public class CommandServiceImpl implements ICommandService {
 		stringUrl.append(PARAM_USER_ID+"="+command.getVrUserId());
 		
 		/*HACK pour la course clipper : pas de boat_id*/
-		if( command.getRaceId()!=8 ) {
+		if( command.getRaceId()!=8 && command.getRaceId()!=11 ) {
 			stringUrl.append(PARAM_SEPARATOR);
 			stringUrl.append(PARAM_BOAT_ID+"="+command.getVrUserId());
 		}
@@ -193,14 +201,27 @@ public class CommandServiceImpl implements ICommandService {
 					if( response.contains("state=KO")) logger.info("KKKKOOOOOO\n"+generateStringUrl(command));
 					if( response.contains("state=OK")) logger.info("OOOOKKKKK");
 					
-					if( !checkCommand(command) ) {
+					String rMode = serviceUserRace.getMode(vrUserId, raceId);
+					
+					int[] wait = {1};
+					if( "SCHEDULE".equals(rMode) ) {
+						wait = WAIT_FOR_SCHEDULE;
+					}
+					else if( "ZEZO_ROUTING".equals(rMode) ) {
+						wait = WAIT_FOR_ZEZO_ROUTING;
+					}
+
+					
+					if( !checkCommand(command, wait) ) {
 						logger.error("Abording command, sending error message...");
 						logger.error("URL:"+generateStringUrl(command));
 						BoatsPositionWrapper boatsPositionWrapper = serviceBoatInfo.retrieveBoatPosition(vrUserId, raceId);
+						
 						MailUtils.sendEmail("sebastien.cormier@gmail.com", 
 								"VRA - Error when execution command "+command.getCommandType()+ " with value "+command.getValue(), 
 								"Date : "+new Date()+"\n\n" +
-								"Race : "+serviceRace.getRaceName(raceId)+"\n\n" +
+								"Race : "+serviceRace.getRaceName(raceId)+"\n" +
+								"Routing : "+rMode+"\n\n" +
 								"Current Heading : "+boatsPositionWrapper.getHeading()+"\n"+
 								"Current Sail : "+SailEnum.getStringValue(boatsPositionWrapper.getSail())+"\n"+
 								"Current State : "+boatsPositionWrapper.getState()+"\n\n" +
@@ -227,11 +248,7 @@ public class CommandServiceImpl implements ICommandService {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	private boolean checkCommand(Command command) throws IOException, InterruptedException {
-		
-		/* duration in second for sleep between each attemp */
-		int[] wait = {1,2,2,2,2,2,2,2,2,2,2,2,2,4,4,4,4,10,10,10,10,20,20,20};
-		//int[] wait = {1};
+	private boolean checkCommand(Command command, int[] wait) throws IOException, InterruptedException {
 		
 		for(int i=0; i<wait.length; i++) {
 

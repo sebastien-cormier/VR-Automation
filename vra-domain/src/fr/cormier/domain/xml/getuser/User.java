@@ -11,31 +11,31 @@ public class User {
 	@Attribute
 	private int id_user;
 	
-	@Attribute
+	@Attribute(required=false)
 	private String date;
 	
-	@Attribute
+	@Attribute(required=false)
 	private String dateGMT;
 
-	@Attribute
+	@Attribute(required=false)
 	private String clientVersion;
 	
-	@Attribute
+	@Attribute(required=false)
 	private String windDate;
 
-	@Attribute
+	@Attribute(required=false)
 	private String isCustomer;
 
-	@Element
+	@Element(required=false)
 	private Position position;
 	
-	@Element
+	@Element(required=false)
 	private int nb_creditsMP;
 	
 	@Element(required=false)
 	private int canFashion;
 	
-	@ElementList
+	@ElementList(required=false)
 	private List<Boat> amis;
 	
 	@ElementList(required=false, data=false)
@@ -50,7 +50,7 @@ public class User {
 	@Element(required=false, data=false)
 	private String message;
 	
-	@Element
+	@Element(required=false)
 	private String opponents_file;
 	
 	@Element(required=false)
