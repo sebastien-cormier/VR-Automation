@@ -132,7 +132,7 @@ public class CommandServiceImpl implements ICommandService {
 		stringUrl.append(PARAM_USER_ID+"="+command.getVrUserId());
 		
 		/*HACK pour la course clipper : pas de boat_id*/
-		if( command.getRaceId()!=8 && command.getRaceId()!=11 ) {
+		if( command.getRaceId()!=8 && command.getRaceId()!=11  && command.getRaceId()!=9 ) {
 			stringUrl.append(PARAM_SEPARATOR);
 			stringUrl.append(PARAM_BOAT_ID+"="+command.getVrUserId());
 		}
