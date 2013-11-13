@@ -53,8 +53,29 @@ public class Position {
 	@Element(required=false)
 	private String id_parcours_xml;
 	
+	@Element(required=false)
+	private boolean option_voile_auto;
+	
+	@Element(required=false)
+	private boolean option_voile_auto_activated;
 	
 	
+	public boolean isOption_voile_auto() {
+		return option_voile_auto;
+	}
+
+	public void setOption_voile_auto(boolean option_voile_auto) {
+		this.option_voile_auto = option_voile_auto;
+	}
+
+	public boolean isOption_voile_auto_activated() {
+		return option_voile_auto_activated;
+	}
+
+	public void setOption_voile_auto_activated(boolean option_voile_auto_activated) {
+		this.option_voile_auto_activated = option_voile_auto_activated;
+	}
+
 	public String getId_parcours_xml() {
 		return id_parcours_xml;
 	}
